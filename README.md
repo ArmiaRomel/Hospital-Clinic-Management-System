@@ -1,5 +1,3 @@
-
-```markdown
 # Hospital & Clinic Management System
 
 This project is a comprehensive Hospital and Clinic Management System designed to streamline various administrative and patient management tasks. It is built using an Oracle database and includes a set of tables, queries, and PL/SQL packages to manage patient information, appointments, treatments, billing, and more.
@@ -393,7 +391,3 @@ The system uses triggers to automate certain actions based on database events.
     END TRG_PREVENT_OVERBOOKING;
     /
     ```
-```
-- Would you like me to help you create a separate SQL file containing all the table creation, insertion, and PL/SQL code for easier database setup?
-- Should we add a "How to Use" or "Setup Instructions" section to the README?
-- I can also help you draft a `.gitignore` file for this project.
