@@ -56,7 +56,7 @@ Below are the details of each table, including its columns and the sequence used
 
 ## Business Intelligence Queries
 
-Here are six queries designed to extract valuable insights from the database. **Remember to replace the placeholder image URLs with your actual screenshots.**
+Here are six queries designed to extract valuable insights from the database.
 
 ### Query 1: List All Patient Appointments
 **Explanation:** This query retrieves a comprehensive list of all appointments, showing the patient's full name, the doctor's full name, the appointment date, and its status. It joins the `APPOINTMENTS`, `PATIENTS`, and `DOCTORS` tables to gather this information.
@@ -76,7 +76,7 @@ JOIN
     DOCTORS D ON A.DOCTOR_ID = D.DOCTOR_ID;
 ```
 **Result:**
-![Query 1 Result](https://i.imgur.com/your-query-1-screenshot.png)
+![Query 1 Result](https://github.com/user-attachments/assets/4538fcc6-eaf6-470a-bf08-3bf61d21ce2b)
 
 ### Query 2: Show the Most Expensive Treatment
 **Explanation:** This query identifies the most expensive treatment recorded in the system. It uses a subquery to first find the maximum cost from the `TREATMENTS` table and then retrieves the details of the treatment(s) with that cost.
@@ -246,8 +246,8 @@ The package body contains the implementation of the procedures and functions def
         SELECT COUNT(*) INTO v_check_patient FROM patients WHERE patient_id = v_appointment_rec.PATIENT_ID;
         SELECT COUNT(*) INTO v_check_patient_appointment FROM APPOINTMENTS 
         WHERE patient_id = v_appointment_rec.PATIENT_ID AND APPOINTMENT_DATE = v_appointment_rec.APPOINTMENT_DATE;
-        SELECT COUNT(*) INTO v_daily_limit FROM APPOINTMENTS 
-        WHERE doctor_id = v_appointment_rec.DOCTOR_ID AND APPOINTMENT_DATE = v_appointment_rec.APPOINTMENT_DATE;
+        -- SELECT COUNT(*) INTO v_daily_limit FROM APPOINTMENTS 
+        -- WHERE doctor_id = v_appointment_rec.DOCTOR_ID AND APPOINTMENT_DATE = v_appointment_rec.APPOINTMENT_DATE;
 
         IF v_check_doctor < 1 THEN
             RAISE doctor_not_found;
@@ -255,8 +255,8 @@ The package body contains the implementation of the procedures and functions def
             RAISE patient_not_found;
         ELSIF v_check_patient_appointment > 0 THEN
             RAISE change_appointment;
-        ELSIF v_daily_limit > 4 THEN
-            RAISE limit_five;
+        -- ELSIF v_daily_limit > 4 THEN
+            -- RAISE limit_five;
         END IF;
         
         INSERT INTO APPOINTMENTS VALUES 
