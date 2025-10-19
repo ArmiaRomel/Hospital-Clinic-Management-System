@@ -76,6 +76,7 @@ JOIN
     DOCTORS D ON A.DOCTOR_ID = D.DOCTOR_ID;
 ```
 **Result:**
+
 ![Query 1 Result](https://github.com/user-attachments/assets/4538fcc6-eaf6-470a-bf08-3bf61d21ce2b)
 
 ### Query 2: Show the Most Expensive Treatment
