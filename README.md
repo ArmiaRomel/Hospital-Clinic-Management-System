@@ -314,7 +314,6 @@ The package body contains the implementation of the procedures and functions def
         SELECT SUM(B.TOTAL_AMOUNT) INTO v_return
         FROM BILLS B
         JOIN APPOINTMENTS A ON B.APPOINTMENT_ID = A.APPOINTMENT_ID
-        JOIN DOCTORS D ON A.DOCTOR_ID = D.DOCTOR_ID
         WHERE B.PAYMENT_STATUS = 'Paid'
         AND A.DOCTOR_ID = p_doctor_id;
         
