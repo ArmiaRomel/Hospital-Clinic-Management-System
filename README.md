@@ -347,7 +347,15 @@ The system uses triggers to automate certain actions based on database events.
     CREATE OR REPLACE TRIGGER TRG_UPDATE_MEDICINE_STOCK
     AFTER INSERT ON prescriptions
     FOR EACH ROW
+    DECLARE
+        V_STOCK MEDICINES.STOCK_QUANTITY%TYPE;
     BEGIN
+        SELECT STOCK_QUANTITY INTO V_STOCK FROM MEDICINES
+        WHERE MEDICINE_ID =:NEW.MEDICINE_ID FOR UPDATE;
+        IF :new.QUANTITY > V_STOCK THEN
+            RAISE_APPLICATION_ERROR (-20030, 'Not enough stock for medicine id ' || :NEW.MEDICINE_ID);
+        END IF;
+    
         UPDATE medicines SET STOCK_QUANTITY = (STOCK_QUANTITY - :new.QUANTITY) 
         WHERE MEDICINE_ID = :new.MEDICINE_ID;
     END TRG_UPDATE_MEDICINE_STOCK;
