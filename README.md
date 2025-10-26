@@ -353,7 +353,7 @@ The system uses triggers to automate certain actions based on database events.
         SELECT STOCK_QUANTITY INTO V_STOCK FROM MEDICINES
         WHERE MEDICINE_ID =:NEW.MEDICINE_ID FOR UPDATE;
         IF :new.QUANTITY > V_STOCK THEN
-            RAISE_APPLICATION_ERROR (-20030, 'Not enough stock for medicine id ' || :NEW.MEDICINE_ID);
+            RAISE_APPLICATION_ERROR (-20030, 'Not enough stock for medicine ID: ' || :NEW.MEDICINE_ID);
         END IF;
     
         UPDATE medicines SET STOCK_QUANTITY = (STOCK_QUANTITY - :new.QUANTITY) 
@@ -371,7 +371,14 @@ The system uses triggers to automate certain actions based on database events.
     FOR EACH ROW
     DECLARE
         v_bill_rec bills%ROWTYPE;
+        V_EXISTS NUMBER;
     BEGIN
+        SELECT COUNT(*) INTO V_EXISTS FROM BILLS
+        WHERE APPOINTMENT_ID =:NEW.APPOINTMENT_ID;
+        IF V_EXISTS > 0 THEN
+            RAISE_APPLICATION_ERROR (-20051, 'Bill is already issued for appointment ID: ' || :NEW.APPOINTMENT_ID);
+        END IF;
+    
         v_bill_rec.bill_id := BILL_ID_SEQ.NEXTVAL;
         v_bill_rec.appointment_id := :NEW.appointment_id;
         v_bill_rec.total_amount := :NEW.cost;
@@ -394,7 +401,7 @@ The system uses triggers to automate certain actions based on database events.
         v_daily_limit NUMBER;
     BEGIN
         SELECT COUNT(*) INTO v_daily_limit FROM APPOINTMENTS 
-        WHERE doctor_id = :new.doctor_id AND APPOINTMENT_DATE = :new.APPOINTMENT_DATE;
+        WHERE doctor_id = :new.doctor_id AND TRUNC(APPOINTMENT_DATE) = TRUNC(:new.APPOINTMENT_DATE);
         
         IF v_daily_limit >= 5 THEN
             RAISE_APPLICATION_ERROR(-20904, 'Doctor will have more than 5 appointments in the same day!');
